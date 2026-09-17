@@ -88,7 +88,11 @@ async function loadAll(){
     if(c44763.length){ document.getElementById('top5-44763').innerHTML = c44763.slice(0,5).map((r,i)=>`<tr ${i===0?'style="font-weight:900;color:#16a34a"':''}><td>${r.rank}. ${r.name}</td><td>${r.plus_minus} (${r.total})</td><td>${r.date||''}</td></tr>`).join(''); }
     const total = data.static_verified?.total_rounds || 473;
     const players = data.static_verified?.unique_players || 65;
-    const hours = data.static_verified?.hours || 589;
+    // LIVE laskenta: jos hours puuttuu, laske kierroksista
+    let hours = data.static_verified?.hours;
+    if(!hours){
+      hours = Math.round(total * 1.25); // 1.25h = 12 väylää, vaihda 1.5 jos haluat 1,5h
+    }
     const steps = data.static_verified?.steps || 1232306;
     const stepsM = (steps/1000000).toFixed(1)+'M';
     document.getElementById('live-total').textContent = total;
