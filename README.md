@@ -1,1 +1,0 @@
-# FINAL - Vihrea pallo + Leaderboard QR pois + Oma thumbnail\nYlalatikoissa vihrea vilkkuva live-dot, oikealla UDisc Leaderboard automaattinen https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx/leaderboard?layoutId=143835&dateRange=all&limit=100\n
