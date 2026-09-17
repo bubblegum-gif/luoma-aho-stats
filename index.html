@@ -1,48 +1,132 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fi">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Luoma-ahon Frisbeegolfrata - Live</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luoma-ahon Frisbeegolfrata - LIVE</title>
 <style>
-body{font-family:Inter,system-ui,sans-serif;margin:0;background:#f6f8fb;color:#0f172a}
-header{background:#0a3d7a;color:white;padding:18px 24px}
-h1{margin:0;font-size:22px}.badge{background:#22c55e;color:#000;padding:3px 8px;border-radius:999px;font-size:12px;margin-left:8px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px}
-.card{background:white;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.big{font-size:28px;font-weight:800}
-.small{color:#64748b;font-size:12px}
-.rata{display:flex;gap:12px;padding:16px}
-.rata .card{flex:1}
-.qr{background:#f97316;color:white;border-radius:14px;padding:16px;text-align:center}
-a.button{background:#0a3d7a;color:white;padding:10px 14px;border-radius:10px;text-decoration:none;display:inline-block;margin-top:8px}
-@media(max-width:800px){.grid{grid-template-columns:1fr 1fr}.rata{flex-direction:column}}
+body{margin:0;background:#eef2f7;font-family:Inter,system-ui,sans-serif;color:#111827}
+.header{background:#0a2342;color:white;padding:16px 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{width:56px;height:56px;border-radius:50%;border:3px solid white;background:white;object-fit:cover}
+.badge{background:#16a34a;color:white;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800}
+.card{background:white;border-radius:16px;border:1px solid #e2e8f0;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.orange{background:#f97316;border-radius:16px;padding:12px;color:white}
+.youtube{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;background:#000}
+.youtube img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:72px;height:48px;background:#ff0000;border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:28px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:768px){.grid{grid-template-columns:repeat(4,1fr)}}
+.layout{max-width:1120px;margin:0 auto;padding:20px}
 </style>
 </head>
 <body>
-<header><h1>Luoma-ahon Frisbeegolfrata <span class="badge">LIVE KÄVIJÄLASKURI</span></h1><div style="opacity:.8;font-size:13px">Alajärvi • 2 rataa • Data: UDisc + Metrix • Päivittyy päivittäin GitHub botilla</div></header>
+<div class="header">
+<div style="display:flex;align-items:center;gap:12px">
+<img class="logo" src="logo-l-a-friba.jpg" alt="L-A FRIBA">
+<div><div style="font-weight:900;font-size:22px">Luoma-ahon Frisbeegolfrata <span class="badge">LIVE KÄVIJÄLASKURI</span></div></div>
+</div>
+<div style="display:flex;gap:6px"><span style="background:white;color:#0a2342;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800">UDISC ✓</span><span style="background:white;color:#0a2342;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800">METRIX ✓</span></div>
+</div>
+<div class="layout">
 <div class="grid">
-<div class="card"><div class="small">KIERROKSIA YHTEENSÄ</div><div class="big" id="total">473</div><div class="small"><span id="udisc">413</span> UDisc + <span id="metrix">60</span> Metrix</div></div>
-<div class="card"><div class="small">UNIIKKEJA PELAAJIA</div><div class="big">65</div><div class="small">Eri pelaajaa 2026</div></div>
-<div class="card" style="background:#0a3d7a;color:white"><div class="small" style="color:#9dc1ff">LIIKUNTAA</div><div class="big">589h</div><div class="small">~75min / kierros • 3+ viikkokisaa</div></div>
-<div class="card"><div class="small">ASKELIA KERÄTTY</div><div class="big">1.2M</div><div class="small">~850 km • Alajärvi → Helsinki</div></div>
+<div class="card"><div style="font-size:11px;font-weight:700;color:#64748b">KIERROKSIA YHTEENSÄ</div><div id="live-total" style="font-size:34px;font-weight:900">473</div><div style="font-size:12px;color:#64748b"><span id="live-udisc-metrix">413 UDisc + 60 Metrix</span><br><span style="color:#16a34a;font-weight:700">kasvu +269% vs 2024</span></div></div>
+<div class="card"><div style="font-size:11px;font-weight:700;color:#64748b">UNIIKKEJA PELAAJIA</div><div style="font-size:34px;font-weight:900">65</div><div style="font-size:12px;color:#64748b">eri pelaajaa 2025</div></div>
+<div class="card" style="background:#0a2342;color:white"><div style="font-size:11px;font-weight:700;color:#93c5fd">LIIKUNTAA</div><div style="font-size:34px;font-weight:900">589h</div><div style="font-size:12px">~75min / kierros</div></div>
+<div class="card"><div style="font-size:11px;font-weight:700;color:#64748b">ASKELIA</div><div style="font-size:34px;font-weight:900">1.2M</div><div style="font-size:12px;color:#64748b">~850 km kävelyä</div></div>
 </div>
-<div class="rata">
-<div class="card"><b>Rata 1 • 12 väylää • Par 41</b> <span style="font-size:11px;background:#eee;padding:2px 6px;border-radius:999px">ID 44010</span><div style="margin-top:8px">Kierroksia: <b id="r1">32</b> Metrixissä</div><a class="button" href="https://discgolfmetrix.com/course/44010" target="_blank">Avaa Metrixissä →</a> <a class="button" style="background:#e2e8f0;color:#0f172a" href="https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx/v2/layouts/143835" target="_blank">UDisc</a></div>
-<div class="card"><b>Rata 2 • 24 väylää • Par 82</b> <span style="font-size:11px;background:#dcfce7;padding:2px 6px;border-radius:999px">ID 44763</span><div style="margin-top:8px">Kierroksia: <b id="r2">28</b> +3 viikkokisaa • Ennätys Timo Alalantela 82 [-0]</div><a class="button" style="background:#22c55e;color:#000" href="https://discgolfmetrix.com/course/44763" target="_blank">Avaa Metrixissä →</a></div>
+
+<div style="display:grid;grid-template-columns:1fr 300px;gap:16px;margin-top:16px">
+<div>
+<div class="card"><b>Väyläopaste</b> <span style="background:#e0f2fe;padding:2px 8px;border-radius:999px;font-size:11px">Rata 1 • 12 väylää</span><br><br>
+<div style="color:#64748b;font-size:13px;line-height:1.5">
+Kalliopohjaisessa mäkisessä mäntymetsä maastossa.<br>
+Tekninen / vaativa mutta helposti lähestyttävä.<br>
+Pienellä alueella jossa olemattomat siirtymät.<br>
+Loistava kunto metsäradaksi.<br>
+Väylien pituudet 57 - 197m<br>
+OB:t ja Mandot haastavat pelaajan päätöksentekoa.<br>
+Tekniikka, kiekko kontrolli ja heittovalinnat avainasemassa onnistumiseen.<br>
+Lähes päivittäinen ylläpito ja kehitys keväästä alkaen
 </div>
-<div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;padding:16px">
-<div class="card"><b>Kausi 2026 • Kierrokset / kk</b> <span style="float:right;font-size:11px;background:#f1f5f9;padding:2px 8px;border-radius:999px">YHT 210 kierrosta</span><div style="display:flex;align-items:end;gap:8px;height:120px;margin-top:12px"><div style="flex:1;background:#1e3a8a;height:40%;border-radius:6px;text-align:center;color:white;font-size:11px;padding-top:4px">20</div><div style="flex:1;background:#1e3a8a;height:55%;border-radius:6px;text-align:center;color:white;font-size:11px">29</div><div style="flex:1;background:#1e3a8a;height:70%;border-radius:6px;text-align:center;color:white;font-size:11px">36</div><div style="flex:1;background:#1e3a8a;height:60%;border-radius:6px;text-align:center;color:white;font-size:11px">31</div><div style="flex:1;background:#22c55e;height:100%;border-radius:6px;text-align:center;color:#000;font-size:12px;font-weight:800">60</div><div style="flex:1;background:#1e3a8a;height:65%;border-radius:6px;text-align:center;color:white;font-size:11px">34</div></div><div style="display:flex;justify-content:space-between;font-size:11px;color:#64748b;margin-top:6px"><span>Maalis</span><span>Huhti</span><span>Touko</span><span>Kesä</span><span>Heinä</span><span>Elo</span></div><div style="display:flex;gap:16px;margin-top:12px;font-size:12px"><span>KESKIARVO <b>35 / kk</b></span><span>PARAS <b>Heinäkuu 60</b></span><span style="color:#16a34a">KASVU <b>+214% vs 2025</b></span></div></div>
-<div class="qr"><div style="font-size:11px;letter-spacing:1px">LIVE RADALLA • Alajärvi</div><h3 style="margin:6px 0">Skannaa<br>mobiililaitteellasi</h3><div style="font-size:11px;margin-bottom:8px">Aloita kierros navigoidaksesi radalla tai pitääksesi tulosta!</div><div style="background:white;border-radius:12px;padding:12px;color:black"><div style="font-weight:700">Luoma-ahon Frisbeegolfrata</div><div style="background:white;display:flex;justify-content:center;margin:8px 0"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx" width="130"></div><div style="font-size:12px">Aloita kierros navigoidaksesi<br>radalla tai pitääksesi tulosta!</div><div style="font-size:9px;margin-top:8px">DISCGOLFMETRIX.COM</div></div></div>
+<div style="margin-top:12px;background:#f8fafc;border-radius:12px;padding:12px">
+<b>5 parasta tulosta - Metrix 44010</b><br>
+<table style="width:100%;font-size:12px;margin-top:6px"><tbody id="top5-44010"><tr><td>1. Toni Luoma-aho</td><td>+1 (42)</td><td>29.4.2026</td></tr><tr><td>2. Eino Vistiaho</td><td>+2 (43)</td><td>29.4.2026</td></tr><tr><td>3. Benjamin Turja</td><td>+3 (44)</td><td>5.10.2025</td></tr><tr><td>4. Toni Luoma-aho</td><td>+4 (45)</td><td>3.4.2026</td></tr><tr><td>5. Jari Vistiaho</td><td>+5 (46)</td><td>29.4.2026</td></tr></tbody></table>
 </div>
-<div class="card" style="margin:16px"><b>Impact Report • Kylälle tuotettu arvo</b><span style="float:right;font-size:11px"><span style="color:#94a3b8">● 2025</span> <span style="color:#22c55e">● 2026</span></span><table style="width:100%;margin-top:12px;border-collapse:collapse;font-size:14px"><tr style="color:#64748b;font-size:11px"><td>MITTARI</td><td>2025</td><td>2026 (Live)</td><td>MUUTOS</td><td>ARVO KYLÄLLE</td></tr><tr><td>Kierrokset</td><td>128</td><td><b>473</b></td><td><span style="background:#dcfce7;color:#166534;padding:2px 6px;border-radius:999px">+269%</span></td><td>Liikunta lisääntyy</td></tr><tr><td>Pelaajia</td><td>31</td><td><b>65</b></td><td><span style="background:#dcfce7;padding:2px 6px;border-radius:999px">+109%</span></td><td>Yhteisö kasvaa</td></tr><tr><td>Tapahtumia</td><td>1</td><td><b>3 viikkokisaa</b></td><td><span style="background:#dcfce7;padding:2px 6px;border-radius:999px">+200%</span></td><td>Kylä elää</td></tr><tr><td>Liikuntatunnit</td><td>160h</td><td><b>589h</b></td><td><span style="background:#1e3a8a;color:white;padding:2px 6px;border-radius:999px">+268%</span></td><td>Terveyshyöty</td></tr></table><div style="margin-top:12px;font-size:11px">✅ Kyläyhdistyksen infotauluun valmis ✅ Kunnan liikuntatoimeen raportoitavissa ✅ Sponsoreille näytettävä</div></div>
-<div style="padding:0 16px 16px;font-size:11px;color:#64748b">Päivitetty: <span id="updated">2026-09-17</span> • Botti: GitHub Actions päivittäin 08:00 • Lähteet: <a href="https://discgolfmetrix.com/course/44010">Metrix 44010</a> • <a href="https://discgolfmetrix.com/course/44763">Metrix 44763</a> • <a href="https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx/v2/layouts/143835">UDisc 143835</a> • <a href="https://frisbeegolfradat.fi/rata/luoma-ahon-frisbeegolfrata/" target="_blank">fgr.fi</a></div>
+</div>
+<div class="card" style="margin-top:12px"><b>Väyläopaste 2 kierrosta</b> <span style="background:#dcfce7;padding:2px 8px;border-radius:999px;font-size:11px">Rata 2 • 24 väylää</span>
+<div style="margin-top:12px;background:#f8fafc;border-radius:12px;padding:12px">
+<b>5 parasta - Metrix 44763</b><br>
+<table style="width:100%;font-size:12px;margin-top:6px"><tbody id="top5-44763"><tr><td>1. Timo Alalantela</td><td>0 (82)</td><td>4.10.2025</td></tr><tr><td>2. Aapo Penttilä</td><td>+1 (83)</td><td>19.10.2025</td></tr><tr><td>3. Eevert Väkeväinen</td><td>+3 (85)</td><td>18.4.2026</td></tr><tr><td>4. Daniel Turja</td><td>+5 (87)</td><td>5.9.2025</td></tr><tr><td>5. Eero Tuohimaa</td><td>+6 (88)</td><td>19.10.2025</td></tr></table>
+</div>
+</div>
+</div>
+<div>
+<div class="orange" style="padding:12px;text-align:center">
+<div style="font-weight:800">LIVE RADALLA</div>
+<div style="background:white;border-radius:12px;padding:10px;margin-top:8px">
+<img src="udisc_qr.png" style="width:120px;height:120px"><br>
+<div style="color:#111827;font-size:11px;font-weight:700;margin-top:6px">Luoma-ahon Frisbeegolfrata</div>
+<div style="color:#64748b;font-size:10px">Skannaa mobiililaitteellasi</div>
+</div>
+</div>
+<div class="card" style="margin-top:12px"><b>🏆 Hole in one</b><br><br>
+<b>Väylä 4 "Julle Special"</b><br>
+1. Benjamin Turja<br>
+2. Julius "Julle Special" Luoma-aho<br><br>
+<b>Väylä 8 Kepposen Kirous</b><br>
+1. Pentti Pitkäranta<br><br>
+<div style="font-size:10px;color:#64748b">L-A FRIBA • 3 holaria kirjattu</div>
+</div>
+</div>
+</div>
+
+<div class="card" style="margin-top:16px">
+<div style="display:flex;justify-content:space-between"><b>Rataesittely video</b><span style="background:#ff0000;color:white;padding:2px 8px;border-radius:999px;font-size:11px">YouTube</span></div>
+<div style="color:#64748b;font-size:12px;margin:6px 0">Katso Luoma-ahon frisbeegolfradan esittely — väylät, heittopaikat ja maisemat Alajärvellä.</div>
+<a href="https://www.youtube.com/watch?v=ewQ-m-BU6SI" target="_blank" style="text-decoration:none">
+<div class="youtube">
+<img src="https://img.youtube.com/vi/ewQ-m-BU6SI/maxresdefault.jpg" alt="YouTube thumbnail">
+<div class="play">▶</div>
+</div>
+</a>
+<div style="font-size:11px;color:#64748b;margin-top:8px">youtube.com / Luoma-ahon Frisbeegolfrata • ID ewQ-m-BU6SI • Klikkaa avataksesi YouTubessa →</div>
+</div>
+
+</div>
+
 <script>
-fetch('data.json').then(r=>r.json()).then(d=>{
-  document.getElementById('updated').innerText=d.updated||'';
-  if(d.courses){if(d.courses['44010']) document.getElementById('r1').innerText=d.courses['44010'].rounds_estimate||32; if(d.courses['44763']) document.getElementById('r2').innerText=d.courses['44763'].rounds_estimate||28;}
-  if(d.static_verified){document.getElementById('total').innerText=d.static_verified.total_rounds; document.getElementById('udisc').innerText=d.static_verified.udisc; document.getElementById('metrix').innerText=d.static_verified.metrix_live||d.static_verified.metrix;}
-}).catch(()=>{});
+async function loadTop5(){
+  try{
+    const res = await fetch('data.json?ts='+Date.now());
+    const data = await res.json();
+    const c44010 = data.courses?.['44010']?.top_results || [];
+    const c44763 = data.courses?.['44763']?.top_results || [];
+    if(c44010.length){
+      const tbody = document.getElementById('top5-44010');
+      tbody.innerHTML = c44010.slice(0,5).map((r,i)=>{
+        const isBest = i===0 ? 'style="font-weight:900;color:#16a34a"' : '';
+        return `<tr ${isBest}><td>${r.rank}. ${r.name}</td><td>${r.plus_minus} (${r.total})</td><td>${r.date || ''}</td></tr>`;
+      }).join('');
+    }
+    if(c44763.length){
+      const tbody2 = document.getElementById('top5-44763');
+      tbody2.innerHTML = c44763.slice(0,5).map((r,i)=>{
+        const isBest = i===0 ? 'style="font-weight:900;color:#16a34a"' : '';
+        return `<tr ${isBest}><td>${r.rank}. ${r.name}</td><td>${r.plus_minus} (${r.total})</td><td>${r.date || ''}</td></tr>`;
+      }).join('');
+    }
+    // Update total if needed
+    const total = data.static_verified?.total_rounds || 473;
+    const udisc = data.static_verified?.udisc || 413;
+    const metrix = data.static_verified?.metrix || 60;
+    const el = document.getElementById('live-total');
+    if(el) el.textContent = total;
+    const el2 = document.getElementById('live-udisc-metrix');
+    if(el2) el2.textContent = `${udisc} UDisc + ${metrix} Metrix`;
+  }catch(e){ console.log('auto top5 load failed', e); }
+}
+loadTop5();
 </script>
+
 </body>
 </html>
