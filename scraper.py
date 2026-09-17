@@ -51,11 +51,47 @@ def main():
     try:
         with open('data.json','r',encoding='utf-8') as f: data=json.load(f)
     except: pass
+
     data['udisc_leaderboard']=fetch_udisc()
+
+    # LIVE TOP 10 Metrixistä
+    total_metrix_rounds = 0
+    for cid in ["44010","44763"]:
+        top = fetch_metrix_top(cid, limit=10)
+        if top:
+            if 'courses' not in data: data['courses']={}
+            if cid not in data['courses']: data['courses'][cid]={}
+            data['courses'][cid]['top_results']=top
+            print(f"Metrix {cid} top {len(top)} haettu")
+
+    # --- UUSI: PELIAIKA LASKENTA KIERROKSISTA ---
+    # Luetaan olemassa olevat luvut jos ei uutta dataa
+    udisc_rounds = data.get('static_verified',{}).get('udisc', 413)
+    metrix_rounds = data.get('static_verified',{}).get('metrix', 60)
+
+    # Jos haluat tulevaisuudessa lukea oikean määrän Metrix APIsta, päivitä nämä:
+    # esim. len(fetch_all_practice_rounds)
+
+    total_rounds = udisc_rounds + metrix_rounds
+
+    # Oletus: 12 väylää = 1.25h, 24 väylää = 2.5h
+    # Tässä yksinkertaistus: kaikki lasketaan 12 väylän mukaan
+    # Jos haluat erotella: 44010 * 1.25 + 44763 * 2.5
+    hours_per_round = 1.25 # vaihda 1.5 jos haluat 1,5h
+    hours = round(total_rounds * hours_per_round)
+    steps_per_round = 2605
+    steps = total_rounds * steps_per_round
+
+    if 'static_verified' not in data: data['static_verified']={}
+    data['static_verified']['total_rounds'] = total_rounds
+    data['static_verified']['hours'] = hours
+    data['static_verified']['steps'] = steps
+    # --------------------------------------------
+
     known=[
         {"hole":4,"hole_name":"Julle Special","player":"Benjamin Turja","date":"2025","source":"Metrix 44010","course_id":"44010"},
-        {"hole":4,"hole_name":"Julle Special","player":'Julius "Julle Special" Luoma-aho',"date":"2026","source":"Metrix 44010","course_id":"44010"},
-        {"hole":8,"hole_name":"Kepposen Kirous","player":"Pentti Pitkäranta","date":"2026","source":"Metrix 44010","course_id":"44010"},
+        {"hole":4,"hole_name":"Julle Special","player":'Julius "Julle Special" Luoma-aho',"date":"2025","source":"Metrix 44010","course_id":"44010"},
+        {"hole":8,"hole_name":"Kepposen Kirous","player":"Pentti Pitkäranta","date":"2025","source":"Metrix 44010","course_id":"44010"},
     ]
     live=[]
     for cid in ["44010","44763"]:
@@ -67,7 +103,7 @@ def main():
     data['hio_updated']=datetime.now().isoformat()
     data['updated']=datetime.now().isoformat()
     with open('data.json','w',encoding='utf-8') as f: json.dump(data,f,ensure_ascii=False,indent=2)
-    print(f"Done LB {len(data['udisc_leaderboard'])} HIO {len(data['hio'])} live {len(live)}")
+    print(f"Done total:{total_rounds} hours:{hours}h steps:{steps} LB:{len(data['udisc_leaderboard'])} HIO:{len(data['hio'])}")
 
 if __name__=="__main__":
     main()
