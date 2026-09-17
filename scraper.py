@@ -1,6 +1,6 @@
 import json, os, re, requests
 from datetime import datetime
-HOLE_NAMES={1:"Avaus",2:"Kumpu",3:"Notko",4:"Julle Special",5:"Maki",6:"Kallio",7:"Saari",8:"Kepposen Kirous",9:"Lopetus"}
+HOLE_NAMES={1:"Russian Roulette",2:"Valonpolku",3:"Kännän Kuiskaus",4:"Julle Special",5:"Nice & Tight",6:"Tiikerin loikka",7:"Haukansilmä",8:"Kepposen Kirous",9:"Helvetin nousu"}
 
 def fetch_udisc():
     return [{"rank":1,"username":"@kantanen8","score":35,"date":"4.7.2026"},{"rank":2,"username":"@valkoparta","score":36,"date":"6.7.2026"},{"rank":3,"username":"@mattiasss","score":36,"date":"19.8.2026"},{"rank":4,"username":"@dashyy","score":38,"date":"13.9.2025"},{"rank":5,"username":"@eero_heittaja","score":39,"date":"12.9.2025"},{"rank":6,"username":"@discgolfari91","score":40,"date":"10.9.2025"},{"rank":7,"username":"@frisbee_fi","score":40,"date":"8.9.2025"},{"rank":8,"username":"@alajarvi_pro","score":41,"date":"5.9.2025"},{"rank":9,"username":"@kiekko_mies","score":41,"date":"3.9.2025"},{"rank":10,"username":"@luoma_aho_fan","score":42,"date":"1.9.2025"}]
@@ -54,8 +54,8 @@ def main():
     data['udisc_leaderboard']=fetch_udisc()
     known=[
         {"hole":4,"hole_name":"Julle Special","player":"Benjamin Turja","date":"2025","source":"Metrix 44010","course_id":"44010"},
-        {"hole":4,"hole_name":"Julle Special","player":'Julius "Julle Special" Luoma-aho',"date":"2025","source":"Metrix 44010","course_id":"44010"},
-        {"hole":8,"hole_name":"Kepposen Kirous","player":"Pentti Pitkäranta","date":"2025","source":"Metrix 44010","course_id":"44010"},
+        {"hole":4,"hole_name":"Julle Special","player":'Julius "Julle Special" Luoma-aho',"date":"2026","source":"Metrix 44010","course_id":"44010"},
+        {"hole":8,"hole_name":"Kepposen Kirous","player":"Pentti Pitkäranta","date":"2026","source":"Metrix 44010","course_id":"44010"},
     ]
     live=[]
     for cid in ["44010","44763"]:
