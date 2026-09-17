@@ -1,4 +1,3 @@
-
 import re, json, csv, os, pathlib
 import requests
 from datetime import datetime, timezone
@@ -17,20 +16,73 @@ def fetch_metrix(course_id, url):
         r = requests.get(url, timeout=20, headers=HEADERS)
         r.raise_for_status()
         html = r.text
-        top_section = re.search(r'Top results(.*?)Course statistics', html, re.DOTALL)
-        if top_section:
-            count = len(re.findall(r'<tr>', top_section.group(1))) - 1
-        else:
-            count = len(re.findall(r'<tr>\s*<td[^>]*>\s*\d+\s*</td>', html))
+        soup = BeautifulSoup(html, 'html.parser')
+        
+        # Find Top results table
+        top_results = []
+        # Look for table after "Top results" heading
+        # The page structure: table with header, then rows
+        # We'll parse all tr that have ranking
+        rows = soup.find_all('tr')
+        for tr in rows:
+            tds = tr.find_all('td')
+            if len(tds) >= 3:
+                # First td is rank number
+                rank_text = tds[0].get_text(strip=True)
+                if rank_text.isdigit():
+                    try:
+                        rank = int(rank_text)
+                        name = tds[1].get_text(strip=True)
+                        # +/- and total are in last tds
+                        # Structure for 44010: rank, name, date, 12 scores, +/-, total
+                        # For 44763: rank, name, date, 24 scores, +/-, total
+                        # +/- is second last, total is last
+                        plus_minus = tds[-2].get_text(strip=True)
+                        total = tds[-1].get_text(strip=True)
+                        date_td = tds[2].get_text(strip=True) if len(tds) > 2 else ""
+                        # Only take top 10
+                        if name and plus_minus:
+                            top_results.append({
+                                "rank": rank,
+                                "name": name,
+                                "plus_minus": plus_minus,
+                                "total": total,
+                                "date": date_td
+                            })
+                    except:
+                        continue
+        
+        # Deduplicate and sort by rank, take top 5 unique best scores
+        # Sort by total score numeric, then plus_minus
+        def score_key(x):
+            try:
+                return int(x['total'])
+            except:
+                return 999
+        top_results_sorted = sorted(top_results, key=score_key)[:15]
+        # Take top 5 unique (allow same name multiple times but best only?)
+        seen_names_scores = set()
+        unique_top = []
+        for entry in top_results_sorted:
+            key = (entry['name'], entry['total'])
+            if key not in seen_names_scores:
+                unique_top.append(entry)
+                seen_names_scores.add(key)
+            if len(unique_top) >= 5:
+                break
+
+        count = len(re.findall(r'<tr>', html)) - 1
+
         return {
             "url": url,
             "rounds_estimate": max(count, 0),
             "rounds_verified_2025_2026": 32 if course_id=="44010" else 28,
+            "top_results": unique_top,
             "fetched_at": datetime.now(timezone.utc).isoformat(),
             "status": "ok"
         }
     except Exception as e:
-        return {"url": url, "rounds_estimate": 0, "error": str(e), "status": "error", "fetched_at": datetime.now(timezone.utc).isoformat()}
+        return {"url": url, "rounds_estimate": 0, "top_results": [], "error": str(e), "status": "error", "fetched_at": datetime.now(timezone.utc).isoformat()}
 
 def fetch_udisc_public():
     try:
@@ -40,7 +92,7 @@ def fetch_udisc_public():
         m_rating = re.search(r'Rating:</strong>\s*([\d.]+)/5\s*\((\d+) reviews\)', html)
         rating = float(m_rating.group(1)) if m_rating else None
         reviews = int(m_rating.group(2)) if m_rating else None
-        return {"url": UDISC_MAIN, "layout_url": UDISC_LAYOUT, "rating": rating, "reviews": reviews, "fetched_at": datetime.now(timezone.utc).isoformat(), "status": "ok", "note": "UDisc pelimäärät vain Ambassador CSV:stä"}
+        return {"url": UDISC_MAIN, "layout_url": UDISC_LAYOUT, "rating": rating, "reviews": reviews, "fetched_at": datetime.now(timezone.utc).isoformat(), "status": "ok"}
     except Exception as e:
         return {"url": UDISC_MAIN, "error": str(e), "status": "error"}
 
@@ -63,20 +115,20 @@ def main():
         static_verified = old.get("static_verified", {})
     else:
         static_verified = {"total_rounds": 473, "udisc": 413, "metrix": 60, "unique_players": 65, "hours": 589, "steps": 1232306, "monthly_2026": {"Maalis":20,"Huhti":29,"Touko":36,"Kesa":31,"Heina":60,"Elo":34,"YHT":210}, "impact": {"2025": {"kierrokset":128,"pelaajia":31,"tapahtumia":1,"tunnit":160}, "2026": {"kierrokset":473,"pelaajia":65,"tapahtumia":3,"tunnit":589}}}
+
     result = {"updated": datetime.now(timezone.utc).isoformat(), "site": "https://bubblegum-gif.github.io/luoma-aho-stats/", "courses": {}, "udisc_public": fetch_udisc_public(), "udisc_csv": parse_udisc_csv_if_exists(), "static_verified": static_verified}
+
     for cid, url in COURSES.items():
         result["courses"][cid] = fetch_metrix(cid, url)
+        print(f"Course {cid}: {len(result['courses'][cid].get('top_results',[]))} top results found")
+
     live_total = sum([v.get("rounds_estimate",0) for v in result["courses"].values() if v.get("status")=="ok"])
     if live_total>0:
         result["static_verified"]["metrix_live"] = live_total
-        result["static_verified"]["metrix"] = live_total
-    if result["udisc_csv"].get("status")=="ok_from_csv":
-        csv_rounds = result["udisc_csv"]["rounds_in_csv"]
-        if csv_rounds>0:
-            result["static_verified"]["udisc"] = csv_rounds
-            result["static_verified"]["total_rounds"] = csv_rounds + result["static_verified"].get("metrix",60)
+
     data_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    print("Saved data.json with auto top5")
+    print(json.dumps(result, ensure_ascii=False, indent=2)[:2000])
 
 if __name__ == "__main__":
     main()

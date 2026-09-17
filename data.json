@@ -4,86 +4,12 @@
     "44010": {
       "url": "https://discgolfmetrix.com/course/44010",
       "rounds_estimate": 32,
-      "status": "ok",
-      "top_results": [
-        {
-          "rank": 1,
-          "name": "Toni Luoma-aho",
-          "plus_minus": "+1",
-          "total": "42",
-          "date": "29.4.2026 18:00"
-        },
-        {
-          "rank": 2,
-          "name": "Eino Vistiaho",
-          "plus_minus": "+2",
-          "total": "43",
-          "date": "29.4.2026 18:00"
-        },
-        {
-          "rank": 3,
-          "name": "Benjamin Turja",
-          "plus_minus": "+3",
-          "total": "44",
-          "date": "5.10.2025 16:00"
-        },
-        {
-          "rank": 4,
-          "name": "Toni Luoma-aho",
-          "plus_minus": "+4",
-          "total": "45",
-          "date": "3.4.2026 14:00"
-        },
-        {
-          "rank": 5,
-          "name": "Jari Vistiaho",
-          "plus_minus": "+5",
-          "total": "46",
-          "date": "29.4.2026 18:00"
-        }
-      ]
+      "status": "ok"
     },
     "44763": {
       "url": "https://discgolfmetrix.com/course/44763",
       "rounds_estimate": 28,
-      "status": "ok",
-      "top_results": [
-        {
-          "rank": 1,
-          "name": "Timo Alalantela",
-          "plus_minus": "0",
-          "total": "82",
-          "date": "4.10.2025 13:00"
-        },
-        {
-          "rank": 2,
-          "name": "Aapo Penttilä",
-          "plus_minus": "+1",
-          "total": "83",
-          "date": "19.10.2025 13:00"
-        },
-        {
-          "rank": 3,
-          "name": "Eevert Väkeväinen",
-          "plus_minus": "+3",
-          "total": "85",
-          "date": "18.4.2026 13:00"
-        },
-        {
-          "rank": 4,
-          "name": "Daniel Turja",
-          "plus_minus": "+5",
-          "total": "87",
-          "date": "5.9.2025 18:00"
-        },
-        {
-          "rank": 5,
-          "name": "Eero Tuohimaa",
-          "plus_minus": "+6",
-          "total": "88",
-          "date": "19.10.2025 13:00"
-        }
-      ]
+      "status": "ok"
     }
   },
   "udisc": {
