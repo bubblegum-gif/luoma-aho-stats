@@ -1,6 +1,6 @@
 import json, os, re, requests
 from datetime import datetime
-HOLE_NAMES={1:"Russian Roulette",2:"Valonpolku",3:"Kännän Kuiskaus",4:"Julle Special",5:"Nice & Tight",6:"Tiikerin loikka",7:"Haukansilmä",8:"Kepposen Kirous",9:"Helvetin nousu"}
+HOLE_NAMES={1:"Russian Roulette",2:"Valonpolku",3:"KÃ¤nnÃ¤n Kuiskaus",4:"Julle Special",5:"Nice & Tight",6:"Tiikerin loikka",7:"HaukansilmÃ¤",8:"Kepposen Kirous",9:"Helvetin nousu"}
 
 def fetch_udisc():
     return [{"rank":1,"username":"@kantanen8","score":35,"date":"4.7.2026"},{"rank":2,"username":"@valkoparta","score":36,"date":"6.7.2026"},{"rank":3,"username":"@mattiasss","score":36,"date":"19.8.2026"},{"rank":4,"username":"@dashyy","score":38,"date":"13.9.2025"},{"rank":5,"username":"@eero_heittaja","score":39,"date":"12.9.2025"},{"rank":6,"username":"@discgolfari91","score":40,"date":"10.9.2025"},{"rank":7,"username":"@frisbee_fi","score":40,"date":"8.9.2025"},{"rank":8,"username":"@alajarvi_pro","score":41,"date":"5.9.2025"},{"rank":9,"username":"@kiekko_mies","score":41,"date":"3.9.2025"},{"rank":10,"username":"@luoma_aho_fan","score":42,"date":"1.9.2025"}]
@@ -54,7 +54,7 @@ def main():
 
     data['udisc_leaderboard']=fetch_udisc()
 
-    # LIVE TOP 10 Metrixistä
+    # LIVE TOP 10 MetrixistÃ¤
     total_metrix_rounds = 0
     for cid in ["44010","44763"]:
         top = fetch_metrix_top(cid, limit=10)
@@ -69,13 +69,13 @@ def main():
     udisc_rounds = data.get('static_verified',{}).get('udisc', 413)
     metrix_rounds = data.get('static_verified',{}).get('metrix', 60)
 
-    # Jos haluat tulevaisuudessa lukea oikean määrän Metrix APIsta, päivitä nämä:
+    # Jos haluat tulevaisuudessa lukea oikean mÃ¤Ã¤rÃ¤n Metrix APIsta, pÃ¤ivitÃ¤ nÃ¤mÃ¤:
     # esim. len(fetch_all_practice_rounds)
 
     total_rounds = udisc_rounds + metrix_rounds
 
-    # Oletus: 12 väylää = 1.25h, 24 väylää = 2.5h
-    # Tässä yksinkertaistus: kaikki lasketaan 12 väylän mukaan
+    # Oletus: 12 vÃ¤ylÃ¤Ã¤ = 1.25h, 24 vÃ¤ylÃ¤Ã¤ = 2.5h
+    # TÃ¤ssÃ¤ yksinkertaistus: kaikki lasketaan 12 vÃ¤ylÃ¤n mukaan
     # Jos haluat erotella: 44010 * 1.25 + 44763 * 2.5
     hours_per_round = 1.25 # vaihda 1.5 jos haluat 1,5h
     hours = round(total_rounds * hours_per_round)
@@ -91,7 +91,7 @@ def main():
     known=[
         {"hole":4,"hole_name":"Julle Special","player":"Benjamin Turja","date":"2025","source":"Metrix 44010","course_id":"44010"},
         {"hole":4,"hole_name":"Julle Special","player":'Julius "Julle Special" Luoma-aho',"date":"2025","source":"Metrix 44010","course_id":"44010"},
-        {"hole":8,"hole_name":"Kepposen Kirous","player":"Pentti Pitkäranta","date":"2025","source":"Metrix 44010","course_id":"44010"},
+        {"hole":8,"hole_name":"Kepposen Kirous","player":"Pentti PitkÃ¤ranta","date":"2025","source":"Metrix 44010","course_id":"44010"},
     ]
     live=[]
     for cid in ["44010","44763"]:
