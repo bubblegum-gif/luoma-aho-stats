@@ -1,18 +1,34 @@
 {
   "static_verified": {
-    "total_rounds": 684,
+    "total_rounds": 682,
     "udisc": 624,
-    "metrix": 60,
+    "metrix": 58,
     "unique_players": 72,
-    "hours": 824,
-    "steps": 1860682,
+    "hours": 821,
+    "steps": 2000002,
     "udisc_2026": 210,
     "udisc_lifetime_with_2026": 624,
     "total_rounds_with_2026": 684,
     "hours_with_2026": 824,
     "steps_thousands_2026": 634000,
-    "total_rounds_udisc_only": 624,
-    "total_rounds_with_metrix": 684
+    "parent_course": "43119",
+    "all_layouts": [
+      "44010",
+      "44763",
+      "43119"
+    ],
+    "metrix_breakdown": {
+      "44010": 30,
+      "44763": 28,
+      "43119": 0,
+      "total": 58,
+      "source": "https://discgolfmetrix.com/course/44010 + /44763 + parent 43119 auto discovery",
+      "course_list": [
+        "44010",
+        "44763",
+        "43119"
+      ]
+    }
   },
   "udisc_leaderboard": [
     {
@@ -253,7 +269,5 @@
     "ratings_count": 18,
     "upkeep": 4.3,
     "shot_variety": 4.0
-  },
-  "updated_note": "total_rounds vaihdettu: 414 lifetime + 210 (2026 maalis-elokuu) = 624 UDisc + 60 Metrix = 684"
+  }
 }
-
