@@ -278,6 +278,115 @@
     "Väyläopaste 2 kierrosta 44763": "AUTO",
     "Hole in one": "AUTO",
     "UDisc Leaderboard": "AUTO",
-    "Impact Report 2024->2026": "AUTO"
+    "Impact Report 2024->2026": "AUTO",
+    "UDisc layout 143835 PÄÄ->Pitkä": "AUTO - LIVE scraping 12 väylää"
+  },
+  "udisc_layouts": {
+    "143835": {
+      "layout_id": "143835",
+      "name": "PÄÄ → Pitkä",
+      "holes": [
+        {
+          "hole": 1,
+          "tee": "PÄÄ",
+          "target": "Pitkä",
+          "dist_ft": 410,
+          "dist_m": 125,
+          "par": 4
+        },
+        {
+          "hole": 2,
+          "tee": "PÄÄ",
+          "target": "Pitkä",
+          "dist_ft": 338,
+          "dist_m": 103,
+          "par": 3
+        },
+        {
+          "hole": 3,
+          "tee": "PÄÄ",
+          "target": "Pitkä",
+          "dist_ft": 236,
+          "dist_m": 72,
+          "par": 3
+        },
+        {
+          "hole": 4,
+          "tee": "PÄÄ",
+          "target": "Pitkä",
+          "dist_ft": 189,
+          "dist_m": 58,
+          "par": 3
+        },
+        {
+          "hole": 5,
+          "tee": "PÄÄ",
+          "target": "Pitkä",
+          "dist_ft": 308,
+          "dist_m": 94,
+          "par": 3
+        },
+        {
+          "hole": 6,
+          "tee": "PÄÄ",
+          "target": "Pitkä",
+          "dist_ft": 315,
+          "dist_m": 96,
+          "par": 3
+        },
+        {
+          "hole": 7,
+          "tee": "PÄÄ",
+          "target": "Pitkä",
+          "dist_ft": 336,
+          "dist_m": 102,
+          "par": 3
+        },
+        {
+          "hole": 8,
+          "tee": "PÄÄ",
+          "target": "Pitkä",
+          "dist_ft": 264,
+          "dist_m": 80,
+          "par": 3
+        },
+        {
+          "hole": 9,
+          "tee": "PÄÄ",
+          "target": "Pitkä",
+          "dist_ft": 381,
+          "dist_m": 116,
+          "par": 4
+        },
+        {
+          "hole": 10,
+          "tee": "PÄÄ",
+          "target": "Pitkä",
+          "dist_ft": 279,
+          "dist_m": 85,
+          "par": 3
+        },
+        {
+          "hole": 11,
+          "tee": "PÄÄ",
+          "target": "Pitkä",
+          "dist_ft": 646,
+          "dist_m": 197,
+          "par": 5
+        },
+        {
+          "hole": 12,
+          "tee": "PÄÄ",
+          "target": "Pitkä",
+          "dist_ft": 394,
+          "dist_m": 120,
+          "par": 4
+        }
+      ],
+      "total_ft": 4096,
+      "total_m": 1248,
+      "total_par": 41,
+      "source": "https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx/v2/layouts/143835"
+    }
   }
 }
