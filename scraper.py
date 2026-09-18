@@ -12,20 +12,55 @@ STEPS_PER_ROUND = 2963  # UDisc official fact sheet
 # ----------------------------------------------------------------
 
 def fetch_udisc():
+    """UDisc Leaderboard + CSV AUTO GROWTH - kun viet udisc_export.csv, kaikki kasvaa automaattisesti"""
     csv_path = Path("udisc_export.csv")
     if csv_path.exists():
         try:
             import csv
+            from collections import Counter
             rows = list(csv.DictReader(open(csv_path, encoding='utf-8')))
-            lb=[]
-            for i,r in enumerate(sorted(rows, key=lambda x: int(x.get('score',999)))[:10]):
-                lb.append({"rank":i+1,"username":r.get('username','@player'),"score":int(r.get('score',0)),"date":r.get('date','')})
-            if lb:
-                return lb
+            if rows:
+                # Laske kaikki
+                total = len(rows)
+                # Uniikit pelaajat
+                usernames = [r.get('username','').strip() for r in rows if r.get('username')]
+                unique = len(set(usernames)) if usernames else 0
+                # Leaderboard TOP10
+                lb=[]
+                def score_key(x):
+                    try:
+                        return int(x.get('score',999))
+                    except:
+                        return 999
+                sorted_rows = sorted(rows, key=score_key)
+                for i,r in enumerate(sorted_rows[:10]):
+                    try:
+                        sc = int(r.get('score',0))
+                    except:
+                        sc = 0
+                    lb.append({"rank":i+1,"username":r.get('username','@player'),"score":sc,"date":r.get('date','')})
+                # Kuukausittainen kasvu jos date sarake löytyy
+                monthly = Counter()
+                for r in rows:
+                    d = r.get('date','')
+                    # yritä parsia YYYY-MM tai M/D/YY
+                    import re
+                    m = re.search(r'(\d{4})-(\d{2})', d)
+                    if m:
+                        key = f"{m.group(1)}-{m.group(2)}"
+                        monthly[key]+=1
+                print(f"UDisc CSV LIVE: {total} kierrosta, {unique} pelaajaa, TOP10 ok, kuukaudet {dict(monthly)}")
+                # Tallenna stats data.jsonia varten globaaliin
+                fetch_udisc.csv_stats = {"total": total, "unique": unique, "monthly": dict(monthly), "leaderboard": lb}
+                if lb:
+                    return lb
         except Exception as e:
             print(f"UDisc CSV fail: {e}")
     # LIVE fallback - viimeisin tunnettu leaderboard
+    fetch_udisc.csv_stats = None
     return [{"rank":1,"username":"@kantanen8","score":35,"date":"4.7.2026"},{"rank":2,"username":"@valkoparta","score":36,"date":"6.7.2026"},{"rank":3,"username":"@mattiasss","score":36,"date":"19.8.2026"},{"rank":4,"username":"@dashyy","score":38,"date":"13.9.2025"},{"rank":5,"username":"@eero_heittaja","score":39,"date":"12.9.2025"},{"rank":6,"username":"@discgolfari91","score":40,"date":"10.9.2025"},{"rank":7,"username":"@frisbee_fi","score":40,"date":"8.9.2025"},{"rank":8,"username":"@alajarvi_pro","score":41,"date":"5.9.2025"},{"rank":9,"username":"@kiekko_mies","score":41,"date":"3.9.2025"},{"rank":10,"username":"@luoma_aho_fan","score":42,"date":"1.9.2025"}]
+
+fetch_udisc.csv_stats = None
 
 
 def fetch_udisc_layout_143835():
@@ -272,11 +307,19 @@ def main():
             if cid not in data['courses']: data['courses'][cid]={}
             data['courses'][cid]['top_results']=top
 
-    # 4. TULOSKIRJATTUJEN KIERROSTEN KOKONAISMÄÄRÄ - KAIKKI 44010+44763+uudet
+    # 4. TULOSKIRJATTUJEN KIERROSTEN KOKONAISMÄÄRÄ - KAIKKI 44010+44763+uudet + UDisc CSV AUTO GROWTH
     sv=data.get('static_verified',{})
-    udisc_rounds=sv.get('udisc_lifetime_with_2026', 624)
-    if udisc_rounds < 624:
-        udisc_rounds = 624
+    # UDisc CSV jos olemassa -> kasvattaa automaattisesti
+    csv_stats = getattr(fetch_udisc, 'csv_stats', None)
+    if csv_stats and csv_stats.get('total',0) > 0:
+        udisc_rounds = csv_stats['total']
+        csv_unique = csv_stats.get('unique',0)
+        print(f"UDisc CSV AUTO GROWTH: {udisc_rounds} kierrosta, {csv_unique} uniikkia pelaajaa")
+    else:
+        udisc_rounds=sv.get('udisc_lifetime_with_2026', 624)
+        if udisc_rounds < 624:
+            udisc_rounds = 624
+        csv_unique = None
 
     metrix_counts=fetch_metrix_all_practice_count(all_courses)
     metrix_rounds=metrix_counts.get("total",58) if metrix_counts else 58
@@ -285,16 +328,23 @@ def main():
     hours=round(udisc_rounds*1.2 + metrix_rounds*1.25)
     steps=udisc_rounds*2963 + metrix_rounds*2605
 
-    # 5. ERI PELAAJIA, PELIAIKA, ASKELEET AUTO
+    # 5. ERI PELAAJIA, PELIAIKA, ASKELEET AUTO GROWTH
+    if csv_unique and csv_unique > 0:
+        unique_players = csv_unique
+    else:
+        unique_players = 72  # 65 lifetime + 7 uutta 2026 maalis-elokuu
+
     data['static_verified']['total_rounds']=total_rounds
     data['static_verified']['udisc']=udisc_rounds
     data['static_verified']['metrix']=metrix_rounds
     data['static_verified']['metrix_breakdown']=metrix_counts
     data['static_verified']['hours']=hours
     data['static_verified']['steps']=steps
-    data['static_verified']['unique_players']=72  # 65 + 7 uutta 2026
+    data['static_verified']['unique_players']=unique_players
     data['static_verified']['parent_course']=PARENT_COURSE
     data['static_verified']['all_layouts']=all_courses
+    if csv_stats and csv_stats.get('monthly'):
+        data['udisc_csv_monthly']=csv_stats['monthly']
 
     # 6. Hole in one AUTO
     known=[
