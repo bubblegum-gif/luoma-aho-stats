@@ -1,11 +1,18 @@
 {
   "static_verified": {
-    "total_rounds": 473,
-    "udisc": 413,
+    "total_rounds": 684,
+    "udisc": 624,
     "metrix": 60,
-    "unique_players": 65,
-    "hours": 589,
-    "steps": 1232306
+    "unique_players": 72,
+    "hours": 824,
+    "steps": 1860682,
+    "udisc_2026": 210,
+    "udisc_lifetime_with_2026": 624,
+    "total_rounds_with_2026": 684,
+    "hours_with_2026": 824,
+    "steps_thousands_2026": 634000,
+    "total_rounds_udisc_only": 624,
+    "total_rounds_with_metrix": 684
   },
   "udisc_leaderboard": [
     {
@@ -174,5 +181,79 @@
       "course_id": "44010"
     }
   ],
-  "hio_updated": "2026-05-13"
+  "hio_updated": "2026-05-13",
+  "udisc_monthly_2026": {
+    "maaliskuu_2026": {
+      "rounds": 20,
+      "steps_thousands": 65,
+      "fairways": 152,
+      "throws": 629,
+      "unique": 6,
+      "new": 0
+    },
+    "huhtikuu_2026": {
+      "rounds": 29,
+      "steps_thousands": 92,
+      "fairways": 330,
+      "throws": 1350,
+      "unique": 12,
+      "new": 3
+    },
+    "toukokuu_2026": {
+      "rounds": 36,
+      "steps_thousands": 98,
+      "fairways": 252,
+      "throws": 1092,
+      "unique": 9,
+      "new": 0
+    },
+    "kesakuu_2026": {
+      "rounds": 31,
+      "steps_thousands": 97,
+      "fairways": 317,
+      "throws": 1232,
+      "unique": 11,
+      "new": 1
+    },
+    "heinakuu_2026": {
+      "rounds": 60,
+      "steps_thousands": 177,
+      "fairways": 587,
+      "throws": 2519,
+      "unique": 24,
+      "new": 2
+    },
+    "elokuu_2026": {
+      "rounds": 34,
+      "steps_thousands": 105,
+      "fairways": 378,
+      "throws": 1448,
+      "unique": 13,
+      "new": 1
+    }
+  },
+  "udisc_2026_summary": {
+    "rounds": 210,
+    "steps": 634000,
+    "fairways": 2016,
+    "throws": 8270,
+    "new_players": 7,
+    "period": "2026-03 to 2026-08"
+  },
+  "udisc_impact": {
+    "course_length_km": 2.5,
+    "minutes_per_round": 72,
+    "steps_per_round": 2963,
+    "rounds_2025": 203,
+    "distance_km_2025": 464,
+    "hours_2025": 296,
+    "steps_2025": 649726,
+    "players_2025": 30,
+    "rating": 3.7,
+    "ratings_count": 18,
+    "upkeep": 4.3,
+    "shot_variety": 4.0
+  },
+  "updated_note": "total_rounds vaihdettu: 414 lifetime + 210 (2026 maalis-elokuu) = 624 UDisc + 60 Metrix = 684"
 }
+
