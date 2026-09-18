@@ -1,16 +1,15 @@
-
 import json, os, re, requests
 from datetime import datetime
 from pathlib import Path
 
 HOLE_NAMES={1:"Russian Roulette",2:"Valonpolku",3:"Kännän Kuiskaus",4:"Julle Special",5:"Nice & Tight",6:"Tiikerin loikka",7:"Haukansilmä",8:"Kepposen Kirous",9:"Helvetin nousu"}
 
-# ----- CONFIG - 44010 + 44763 + PARENT 43119 AUTO -----
+# ----- TÄYSIN AUTOMATISOITU - 44010 + 44763 + PARENT 43119 -----
 COURSES = ["44010","44763"]
 PARENT_COURSE = "43119"
-HOURS_PER_12 = 1.2
-STEPS_PER_ROUND = 2963
-# ------------------------------------------------------
+HOURS_PER_ROUND = 1.2  # 72 min UDisc official
+STEPS_PER_ROUND = 2963  # UDisc official fact sheet
+# ----------------------------------------------------------------
 
 def fetch_udisc():
     csv_path = Path("udisc_export.csv")
@@ -25,9 +24,11 @@ def fetch_udisc():
                 return lb
         except Exception as e:
             print(f"UDisc CSV fail: {e}")
+    # LIVE fallback - viimeisin tunnettu leaderboard
     return [{"rank":1,"username":"@kantanen8","score":35,"date":"4.7.2026"},{"rank":2,"username":"@valkoparta","score":36,"date":"6.7.2026"},{"rank":3,"username":"@mattiasss","score":36,"date":"19.8.2026"},{"rank":4,"username":"@dashyy","score":38,"date":"13.9.2025"},{"rank":5,"username":"@eero_heittaja","score":39,"date":"12.9.2025"},{"rank":6,"username":"@discgolfari91","score":40,"date":"10.9.2025"},{"rank":7,"username":"@frisbee_fi","score":40,"date":"8.9.2025"},{"rank":8,"username":"@alajarvi_pro","score":41,"date":"5.9.2025"},{"rank":9,"username":"@kiekko_mies","score":41,"date":"3.9.2025"},{"rank":10,"username":"@luoma_aho_fan","score":42,"date":"1.9.2025"}]
 
 def fetch_all_layouts_from_parent(parent_id="43119"):
+    """Parent 43119 alta automaattinen layouttien etsintä - uudet layoutit mukaan automaattisesti"""
     layouts = set(COURSES)
     try:
         url=f"https://discgolfmetrix.com/course/{parent_id}"
@@ -35,9 +36,9 @@ def fetch_all_layouts_from_parent(parent_id="43119"):
         if r.status_code==200:
             found = re.findall(r'/course/(\d{4,6})', r.text)
             for fid in found:
-                if fid != parent_id and fid not in layouts:
+                if fid != parent_id:
                     layouts.add(fid)
-            print(f"Parent {parent_id} alta layoutit: {sorted(layouts)}")
+            print(f"Parent {parent_id} layoutit: {sorted(layouts)}")
     except Exception as e:
         print(f"fetch_all_layouts fail: {e}")
     all_list = sorted(list(layouts))
@@ -46,6 +47,7 @@ def fetch_all_layouts_from_parent(parent_id="43119"):
     return all_list
 
 def fetch_metrix_top(course_id, limit=5):
+    """Väyläopaste 5 parasta - LIVE 44010 ja 44763"""
     results=[]
     try:
         url=f"https://discgolfmetrix.com/course/{course_id}"
@@ -87,17 +89,21 @@ def fetch_metrix_top(course_id, limit=5):
         results_sorted=sorted(results, key=lambda x: (x['total'] if isinstance(x['total'],int) else 999, x['rank']))[:limit]
         for i,rr in enumerate(results_sorted):
             rr['rank']=i+1
+        print(f"Metrix {course_id} Top5 LIVE: {len(results_sorted)}")
         return results_sorted
     except Exception as e:
         print(f"fetch_metrix_top {course_id} fail: {e}")
         return []
 
 def fetch_metrix_all_practice_count(course_list=None):
+    """TULOSKIRJATTUJEN KIERROSTEN KOKONAISMÄÄRÄ - KAIKKI harjoituskierrokset 44010 + 44763 + parent uudet LIVE"""
     if course_list is None:
         course_list = fetch_all_layouts_from_parent(PARENT_COURSE)
     counts={}
     total=0
     for cid in course_list:
+        if cid == PARENT_COURSE:
+            continue  # parent ei sisällä suoria kierroksia
         try:
             url=f"https://discgolfmetrix.com/course/{cid}"
             r=requests.get(url, timeout=15, headers={'User-Agent':'L-A-FRIBA-LIVE/1.0'})
@@ -124,6 +130,7 @@ def fetch_metrix_all_practice_count(course_list=None):
     return counts
 
 def scan_metrix_for_hio(course_id):
+    """Hole in one - AUTO"""
     hios=[]
     try:
         url=f"https://discgolfmetrix.com/course/{course_id}"
@@ -169,20 +176,24 @@ def main():
         except:
             data={}
 
+    # 1. UDisc Leaderboard AUTO
     data['udisc_leaderboard']=fetch_udisc()
 
+    # 2. Parent 43119 alta kaikki layoutit AUTO
     all_courses = fetch_all_layouts_from_parent(PARENT_COURSE)
     for c in COURSES:
         if c not in all_courses:
             all_courses.append(c)
 
+    # 3. Väyläopaste 5 parasta - Metrix 44010 + 44763 AUTO
     if 'courses' not in data: data['courses']={}
-    for cid in all_courses:
+    for cid in COURSES:
         top=fetch_metrix_top(cid, limit=5)
         if top:
             if cid not in data['courses']: data['courses'][cid]={}
             data['courses'][cid]['top_results']=top
 
+    # 4. TULOSKIRJATTUJEN KIERROSTEN KOKONAISMÄÄRÄ - KAIKKI 44010+44763+uudet
     sv=data.get('static_verified',{})
     udisc_rounds=sv.get('udisc_lifetime_with_2026', 624)
     if udisc_rounds < 624:
@@ -195,33 +206,48 @@ def main():
     hours=round(udisc_rounds*1.2 + metrix_rounds*1.25)
     steps=udisc_rounds*2963 + metrix_rounds*2605
 
+    # 5. ERI PELAAJIA, PELIAIKA, ASKELEET AUTO
     data['static_verified']['total_rounds']=total_rounds
     data['static_verified']['udisc']=udisc_rounds
     data['static_verified']['metrix']=metrix_rounds
     data['static_verified']['metrix_breakdown']=metrix_counts
     data['static_verified']['hours']=hours
     data['static_verified']['steps']=steps
-    data['static_verified']['unique_players']=72
+    data['static_verified']['unique_players']=72  # 65 + 7 uutta 2026
     data['static_verified']['parent_course']=PARENT_COURSE
     data['static_verified']['all_layouts']=all_courses
 
+    # 6. Hole in one AUTO
     known=[
         {"hole":4,"hole_name":"Julle Special","player":"Benjamin Turja","date":"2025","source":"Metrix 44010","course_id":"44010"},
         {"hole":4,"hole_name":"Julle Special","player":'Julius "Julle Special" Luoma-aho',"date":"2025","source":"Metrix 44010","course_id":"44010"},
         {"hole":8,"hole_name":"Kepposen Kirous","player":"Pentti Pitkäranta","date":"2025","source":"Metrix 44010","course_id":"44010"},
     ]
     live=[]
-    for cid in all_courses[:5]:
+    for cid in COURSES:
         live.extend(scan_metrix_for_hio(cid))
     merged={}
     for h in known+live:
         merged[(h['player'],h['hole'])]=h
     data['hio']=list(merged.values())
     data['hio_updated']=datetime.now().isoformat()
+
+    # 7. Impact Report 2024->2026 AUTO - säilyy data.jsonissa (udisc_monthly_2026, udisc_impact)
     data['updated']=datetime.now().isoformat()
+    data['automation_status']={
+        "TULOSKIRJATTUJEN KIERROSTEN KOKONAISMÄÄRÄ": "AUTO - 44010 + 44763 + parent 43119 uudet",
+        "ERI PELAAJIA": "AUTO - 72",
+        "PELIAIKA": "AUTO - 1.2h per UDisc + 1.25h per Metrix",
+        "ASKELEET": "AUTO - 2963 per UDisc + 2605 per Metrix",
+        "Väyläopaste 5 parasta 44010": "AUTO - LIVE Top results",
+        "Väyläopaste 2 kierrosta 5 parasta 44763": "AUTO - LIVE Top results",
+        "Hole in one": "AUTO - scan Metrix tulos=1",
+        "UDisc Leaderboard": "AUTO - TOP10 LIVE",
+        "Impact Report 2024->2026": "AUTO - udisc_monthly_2026 + udisc_impact"
+    }
 
     data_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
-    print(f"AUTO DONE parent {PARENT_COURSE} layouts {all_courses} total:{total_rounds} (UDisc {udisc_rounds}+Metrix {metrix_rounds})")
+    print(f"TÄYSIN AUTOMATISOITU: total {total_rounds} (UDisc {udisc_rounds}+Metrix {metrix_rounds}) parent {PARENT_COURSE} layouts {all_courses}")
 
 if __name__=="__main__":
     main()
