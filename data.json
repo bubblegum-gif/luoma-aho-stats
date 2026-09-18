@@ -20,9 +20,8 @@
     "metrix_breakdown": {
       "44010": 30,
       "44763": 28,
-      "43119": 0,
       "total": 58,
-      "source": "https://discgolfmetrix.com/course/44010 + /44763 + parent 43119 auto discovery",
+      "source": "Parent 43119 + 44010 + 44763 LIVE",
       "course_list": [
         "44010",
         "44763",
@@ -269,5 +268,16 @@
     "ratings_count": 18,
     "upkeep": 4.3,
     "shot_variety": 4.0
+  },
+  "automation_status": {
+    "TULOSKIRJATTUJEN KIERROSTEN KOKONAISMÄÄRÄ": "AUTO",
+    "ERI PELAAJIA": "AUTO",
+    "PELIAIKA": "AUTO",
+    "ASKELEET": "AUTO",
+    "Väyläopaste 5 parasta 44010": "AUTO",
+    "Väyläopaste 2 kierrosta 44763": "AUTO",
+    "Hole in one": "AUTO",
+    "UDisc Leaderboard": "AUTO",
+    "Impact Report 2024->2026": "AUTO"
   }
 }
