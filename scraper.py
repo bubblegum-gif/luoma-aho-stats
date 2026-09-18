@@ -27,6 +27,80 @@ def fetch_udisc():
     # LIVE fallback - viimeisin tunnettu leaderboard
     return [{"rank":1,"username":"@kantanen8","score":35,"date":"4.7.2026"},{"rank":2,"username":"@valkoparta","score":36,"date":"6.7.2026"},{"rank":3,"username":"@mattiasss","score":36,"date":"19.8.2026"},{"rank":4,"username":"@dashyy","score":38,"date":"13.9.2025"},{"rank":5,"username":"@eero_heittaja","score":39,"date":"12.9.2025"},{"rank":6,"username":"@discgolfari91","score":40,"date":"10.9.2025"},{"rank":7,"username":"@frisbee_fi","score":40,"date":"8.9.2025"},{"rank":8,"username":"@alajarvi_pro","score":41,"date":"5.9.2025"},{"rank":9,"username":"@kiekko_mies","score":41,"date":"3.9.2025"},{"rank":10,"username":"@luoma_aho_fan","score":42,"date":"1.9.2025"}]
 
+
+def fetch_udisc_layout_143835():
+    """UDisc layout 143835 - PÄÄ -> Pitkä - LIVE haku"""
+    layout_id = "143835"
+    course_slug = "luoma-ahon-frisbeegolfrata-YNEx"
+    url = f"https://udisc.com/courses/{course_slug}/v2/layouts/{layout_id}"
+    holes=[]
+    try:
+        r=requests.get(url, timeout=15, headers={'User-Agent':'L-A-FRIBA-UDisc/1.0'})
+        if r.status_code!=200:
+            print(f"UDisc layout {layout_id} status {r.status_code}")
+            return None
+        text=r.text
+        # Parsitaan rivit: | 1 | PÄÄ | Pitkä | 410 ft | 4 | 20%... |
+        for line in text.splitlines():
+            ls=line.strip()
+            if not ls.startswith("|"):
+                continue
+            if "Tee | Target | Dist | Par" in ls:
+                continue
+            if "---" in ls:
+                continue
+            parts=[p.strip() for p in ls.split("|")]
+            # odotetaan: | # | Tee | Target | Dist | Par | Global avg | |
+            if len(parts) < 7:
+                continue
+            try:
+                num=parts[1]
+                if not num.isdigit():
+                    continue
+                hole=int(num)
+                tee=parts[2]
+                target=parts[3]
+                dist_raw=parts[4]  # 410 ft
+                par_raw=parts[5]
+                # dist ft -> m
+                m_ft=re.search(r'(\d+)\s*ft', dist_raw)
+                dist_ft=int(m_ft.group(1)) if m_ft else None
+                dist_m=round(dist_ft*0.3048) if dist_ft else None
+                par=int(par_raw) if par_raw.isdigit() else None
+                # Global avg on parts[6] jos olemassa
+                global_avg=parts[6] if len(parts)>6 else ""
+                holes.append({
+                    "hole": hole,
+                    "tee": tee,
+                    "target": target,
+                    "dist_ft": dist_ft,
+                    "dist_m": dist_m,
+                    "par": par,
+                    "global_avg_raw": global_avg
+                })
+            except:
+                continue
+        holes_sorted=sorted(holes, key=lambda x: x['hole'])
+        print(f"UDisc layout {layout_id} LIVE: {len(holes_sorted)} väylää")
+        # Laske yhteispituus ja par
+        if holes_sorted:
+            total_ft=sum(h['dist_ft'] for h in holes_sorted if h['dist_ft'])
+            total_m=sum(h['dist_m'] for h in holes_sorted if h['dist_m'])
+            total_par=sum(h['par'] for h in holes_sorted if h['par'])
+            return {
+                "layout_id": layout_id,
+                "name": "PÄÄ → Pitkä",
+                "holes": holes_sorted,
+                "total_ft": total_ft,
+                "total_m": total_m,
+                "total_par": total_par,
+                "source": url
+            }
+    except Exception as e:
+        print(f"fetch_udisc_layout_143835 fail: {e}")
+    return None
+
+
 def fetch_all_layouts_from_parent(parent_id="43119"):
     """Parent 43119 alta automaattinen layouttien etsintä - uudet layoutit mukaan automaattisesti"""
     layouts = set(COURSES)
@@ -176,8 +250,13 @@ def main():
         except:
             data={}
 
-    # 1. UDisc Leaderboard AUTO
+    # 1. UDisc Leaderboard AUTO + Layout 143835 LIVE
     data['udisc_leaderboard']=fetch_udisc()
+    udisc_layout=fetch_udisc_layout_143835()
+    if udisc_layout:
+        if 'udisc_layouts' not in data: data['udisc_layouts']={}
+        data['udisc_layouts']['143835']=udisc_layout
+        print(f"UDisc 143835 tallennettu: {udisc_layout['total_m']}m Par {udisc_layout['total_par']}")
 
     # 2. Parent 43119 alta kaikki layoutit AUTO
     all_courses = fetch_all_layouts_from_parent(PARENT_COURSE)
