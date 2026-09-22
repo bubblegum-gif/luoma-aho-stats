@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luoma-ahon Frisbeegolfrata - Alajärvi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{font-family:Inter,system-ui,sans-serif}
+.header-btn{height:38px;display:inline-flex;align-items:center;justify-content:center;border-radius:9999px;font-size:11px;font-weight:800;transition:.2s;overflow:hidden}
+.header-btn:hover{transform:scale(1.05)}
+.white-pill{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);border:1px solid rgba(0,0,0,.05);color:#000;padding:0 12px}
+.transparent-pill{background:transparent;border:1px solid rgba(0,0,0,.1);padding:0 12px}
+.gradient-btn{background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);color:#fff;width:38px}
+</style>
+</head>
+<body class="bg-[#f6f5f2] text-[#111] min-h-screen">
+<header class="sticky top-0 z-50 bg-[#0a0a0a] text-white border-b border-white/10">
+  <div class="mx-auto max-w-[1560px] px-4 md:px-6 flex flex-col lg:flex-row lg:items-center justify-between gap-2 py-3 lg:h-[76px] min-h-[92px] lg:min-h-[76px]">
+    <div class="flex items-center gap-3">
+      <img src="https://frisbeegolfradat.fi/wp-content/uploads/2023/06/cropped-frisbeegolfradat-favicon-1-32x32.png" class="w-10 h-10 rounded-full bg-white p-1" onerror="this.style.display='none'">
+      <div>
+        <h1 class="font-black text-[18px] md:text-[20px] leading-none tracking-tight">Luoma-ahon Frisbeegolfrata</h1>
+        <p class="text-[11px] text-white/60 font-bold tracking-widest">Alajärvi • est. 2025 • Par 46 • 12 väylää</p>
+      </div>
+    </div>
+    <div id="header-btns" class="flex flex-wrap items-center gap-2"></div>
+  </div>
+</header>
+
+<main class="mx-auto max-w-[1560px] px-4 md:px-6 py-6 space-y-8">
+  <!-- TILASTOT -->
+  <section>
+    <h2 class="text-[12px] font-black tracking-[0.2em] text-black/40 mb-3">TILAS TOT</h2>
+    <div id="tilastot" class="grid grid-cols-2 md:grid-cols-5 gap-3"></div>
+  </section>
+
+  <!-- RATA & TULOKSET -->
+  <section>
+    <h2 class="text-[12px] font-black tracking-[0.2em] text-black/40 mb-3">RATA & TULOKSET</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div class="bg-white rounded-[18px] p-4 shadow border border-black/5">
+        <div class="text-[11px] font-black tracking-widest text-black/40">RATAINFO</div>
+        <div id="ratainfo" class="mt-3 space-y-2 text-[11px] leading-snug text-black/70 max-h-[300px] overflow-auto"></div>
+      </div>
+      <div id="top5-1" class="bg-white rounded-[18px] p-4 shadow border border-black/5"></div>
+      <div id="top5-2" class="bg-white rounded-[18px] p-4 shadow border border-black/5"></div>
+      <div id="udisc-top10" class="bg-white rounded-[18px] p-4 shadow border border-black/5"></div>
+      <div id="saa" class="bg-white rounded-[18px] p-4 shadow border border-black/5"></div>
+    </div>
+  </section>
+
+  <!-- VÄYLÄTILASTO -->
+  <section>
+    <h2 class="text-[28px] font-black tracking-tight">VÄYLÄTILASTO</h2>
+    <div class="bg-white rounded-[18px] p-4 shadow border border-black/5 overflow-auto">
+      <div id="vaylat-info" class="flex gap-2 mb-3 text-[11px] font-black"></div>
+      <table class="w-full text-left text-[11px] border-collapse">
+        <thead class="text-[10px] font-black text-black/40 border-b">
+          <tr><th class="py-2">VÄYLÄ</th><th>Par</th><th>Avg</th><th>HUOM</th><th>Kaikki</th><th>Opaste</th><th>Birdie%</th><th>Par%</th><th>Bogey%</th></tr>
+        </thead>
+        <tbody id="vaylat-body"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+async function load(){
+  const [ratainfo, vaylat, tilastot, top5, udisc, saa, header] = await Promise.all([
+    fetch('data/ratainfo.json').then(r=>r.json()),
+    fetch('data/vaylat.json').then(r=>r.json()),
+    fetch('data/tilastot.json').then(r=>r.json()),
+    fetch('data/top5.json').then(r=>r.json()),
+    fetch('data/udisc_top10.json').then(r=>r.json()),
+    fetch('data/saa.json').then(r=>r.json()),
+    fetch('data/header.json').then(r=>r.json())
+  ]);
+
+  // Header buttons
+  const hb = document.getElementById('header-btns');
+  header.napit.forEach(b=>{
+    const a=document.createElement('a');
+    a.href=b.url; a.target="_blank"; a.rel="noopener";
+    a.className="header-btn "+(b.nimi==="Instagram"?"gradient-btn":(b.tyyppi.includes("transparent")?"transparent-pill text-black bg-transparent":"white-pill"));
+    if(b.nimi==="Metrix"){ a.style.background="transparent"; a.style.border="none"; a.style.boxShadow="none"; a.innerHTML='<span style="background:#ff6b00;color:#fff;padding:4px 10px;border-radius:9999px;font-weight:900;font-size:11px;letter-spacing:0.05em">METRIX</span>'; }
+    else if(b.nimi==="Parkdly"){ a.textContent="PARKDLY"; a.style.width=b.koko.split('x')[0]+"px"; a.style.fontWeight="900"; a.style.letterSpacing="0.15em"; a.style.color="#000"; }
+    else if(b.nimi.includes("Maps")){ a.textContent="Google Maps"; a.style.width="90px"; }
+    else { a.textContent=b.nimi.toUpperCase(); if(b.koko){ const w=b.koko.split('x')[0]; if(w) a.style.width=w+"px"; } }
+    if(b.nimi==="Instagram") a.textContent="IG";
+    if(b.nimi==="YouTube") a.textContent="YouTube";
+    if(b.nimi==="UDisc") a.textContent="UDisc";
+    hb.appendChild(a);
+  });
+
+  // Tilastot
+  const tDiv=document.getElementById('tilastot');
+  const stats=[
+    {label:"TULOS KIRJATTU JA KIERROSTEN MÄÄRÄ", val: ratainfo.tilastot?.total || tilastot.tulos_kirjatut_ja_kierrosten_maara || 1060},
+    {label:"ERI PELAAJIA", val: tilastot.eri_pelaajia},
+    {label:"PELIAIKA", val: tilastot.peliaika, sub: tilastot.peliaika_min},
+    {label:"ASKELEET", val: tilastot.askeleet, sub: tilastot.askeleet_tarkka},
+    {label:"KILOMETRI", val: tilastot.kilometri}
+  ];
+  stats.forEach(s=>{
+    const d=document.createElement('div');
+    d.className="bg-white rounded-[14px] p-4 shadow border border-black/5 text-center";
+    d.innerHTML=`<div class="text-[9px] font-black tracking-widest text-black/30">${s.label}</div><div class="text-[24px] font-black mt-1">${s.val}</div>${s.sub?`<div class="text-[9px] text-black/40 font-bold mt-1">${s.sub}</div>`:''}`;
+    tDiv.appendChild(d);
+  });
+
+  // Ratainfo
+  const ri=document.getElementById('ratainfo');
+  ratainfo.ratainfo.forEach(line=>{
+    const p=document.createElement('p'); p.textContent=line; ri.appendChild(p);
+  });
+
+  // Top5
+  function renderTop(elId, data){
+    const el=document.getElementById(elId);
+    el.innerHTML=`<div class="text-[11px] font-black tracking-widest text-black/40">${elId.includes('1')?'VÄYLÄOPASTE TOP 6':'VÄYLÄOPASTE 2 KIERROSTA TOP'}<br><span class="text-black">Par rating <span class="bg-emerald-500 text-white px-2 py-0.5 rounded-full">${data.par_rating}</span></span></div><div class="mt-3 space-y-2"></div>`;
+    const list=el.querySelector('div + div')||el.children[1];
+    // Actually second div
+    const container = el.querySelectorAll('div')[1];
+    data.top.forEach((p,i)=>{
+      const row=document.createElement('div');
+      row.className="flex justify-between text-[12px] font-bold";
+      row.innerHTML=`<span>${i+1}. ${p.nimi}</span><span class="text-black/60">${p.rating}</span>`;
+      container.appendChild(row);
+    });
+  }
+  // Use fixed structure
+  document.getElementById('top5-1').innerHTML=`<div class="text-[11px] font-black tracking-widest text-black/40">VÄYLÄOPASTE TOP 6<br><span class="text-black">Par rating <span class="bg-emerald-500 text-white px-2 py-0.5 rounded-full">${top5.vaylapaste_top6_par_rating.par_rating}</span></span></div><div class="mt-3 space-y-2" id="top5-1-list"></div>`;
+  top5.vaylapaste_top6_par_rating.top.forEach((p,i)=>{
+    const row=document.createElement('div'); row.className="flex justify-between text-[12px] font-bold border-b border-black/5 py-1";
+    row.innerHTML=`<span>${i+1}. ${p.nimi} <span class="text-[10px] text-black/40">${p.layout}</span></span><span>${p.rating}</span>`;
+    document.getElementById('top5-1-list').appendChild(row);
+  });
+  document.getElementById('top5-2').innerHTML=`<div class="text-[11px] font-black tracking-widest text-black/40">VÄYLÄOPASTE 2 KIERROSTA TOP<br><span class="text-black">Par rating <span class="bg-emerald-600 text-white px-2 py-0.5 rounded-full">${top5.vaylapaste_2_kierrosta_top.par_rating}</span></span></div><div class="mt-3 space-y-2" id="top5-2-list"></div>`;
+  top5.vaylapaste_2_kierrosta_top.top.forEach((p,i)=>{
+    const row=document.createElement('div'); row.className="flex justify-between text-[12px] font-bold border-b border-black/5 py-1";
+    row.innerHTML=`<span>${i+1}. ${p.nimi}</span><span>${p.rating}</span>`;
+    document.getElementById('top5-2-list').appendChild(row);
+  });
+
+  // UDisc TOP10
+  document.getElementById('udisc-top10').innerHTML=`<div class="text-[11px] font-black tracking-widest text-black/40">UDISC LEADER BOARD TOP 10</div><div class="mt-3 space-y-1" id="udisc-list"></div>`;
+  udisc.forEach(u=>{
+    const row=document.createElement('div'); row.className="flex justify-between text-[12px] font-bold py-1 border-b border-black/5";
+    row.innerHTML=`<span>${u.sija}. ${u.nimi}</span><span class="bg-black text-white px-2 rounded-full text-[11px]">${u.diff}</span>`;
+    document.getElementById('udisc-list').appendChild(row);
+  });
+
+  // Sää
+  document.getElementById('saa').innerHTML=`
+    <div class="text-[11px] font-black tracking-widest text-black/40">SÄÄ - LUOMA-AHO • FORECA</div>
+    <div class="mt-2 text-[10px] font-bold text-black/40">Luoma-aho - Alajärvi</div>
+    <div class="text-[36px] font-black leading-none mt-2">${saa.nyky.temp_c}°C</div>
+    <div class="text-[12px] font-bold">${saa.nyky.kuvaus}</div>
+    <div class="mt-3 grid grid-cols-4 gap-2">
+      ${saa.ennuste_4h.map(h=>`<div class="bg-black/5 rounded-xl p-2 text-center"><div class="text-[9px] font-bold text-black/40">${h.klo}</div><div class="text-[11px] font-black mt-1">${h.temp}</div></div>`).join('')}
+    </div>
+    <div class="mt-3 text-[11px] space-y-1">
+      <div class="flex justify-between"><span class="text-black/40 font-bold">Tuuli</span><span class="font-bold">${saa.nyky.tuuli}</span></div>
+      <div class="flex justify-between"><span class="text-black/40 font-bold">Sade 24h</span><span class="font-bold">${saa.nyky.sade_24h}</span></div>
+      <div class="flex justify-between"><span class="text-black/40 font-bold">Kosteus</span><span class="font-bold">${saa.nyky.kosteus}</span></div>
+    </div>
+    <a href="https://www.foreca.fi/Finland/Alajarvi/Luoma-aho" target="_blank" class="mt-4 block bg-black text-white text-center py-2 rounded-full text-[12px] font-black">Avaa Foreca →</a>
+  `;
+
+  // Väylät
+  document.getElementById('vaylat-info').innerHTML=`<span class="bg-black text-white px-3 py-1 rounded-full">12 VÄYLÄÄ</span><span class="bg-black/5 px-3 py-1 rounded-full">PAR ${vaylat.par_yhteensa}</span><span class="text-[10px] text-black/40 ml-2">HUOM = Avg-Par • 10% tummempi</span>`;
+  const tbody=document.getElementById('vaylat-body');
+  vaylat.vaylat.forEach(v=>{
+    const tr=document.createElement('tr'); tr.className="border-b border-black/5";
+    const huomClass = v.huom_overPar>1?'bg-red-500 text-white':v.huom_overPar>0.3?'bg-orange-400 text-white':v.huom_overPar>0?'bg-yellow-400 text-black':'bg-emerald-500 text-white';
+    tr.innerHTML=`<td class="py-2 font-black">${v.vayla}</td><td>${v.par}</td><td>${v.avg_yhdist.toFixed(2)}</td><td><span class="px-2 py-1 rounded-full text-[10px] font-black ${huomClass}">${v.huom_overPar>0?'+':''}${v.huom_overPar.toFixed(2)}</span></td><td>${v.kaikki_kierrokset}</td><td>${v.vaylaopaste}</td><td>${v['birdie_%']}%</td><td>${v['par_%']}%</td><td>${v['bogey_%']}%</td>`;
+    tbody.appendChild(tr);
+  });
+}
+load();
+</script>
+</body>
+</html>
