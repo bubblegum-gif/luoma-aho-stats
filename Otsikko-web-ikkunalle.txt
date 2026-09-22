@@ -1,0 +1,8 @@
+Luoma-Aho-GITHUB.zip
+├── README.md
+├── src/
+│   └── App.tsx (React source)
+└── dist/
+    ├── Luoma-Aho-OIKEA-10nappia-9nappia-ILMAN-TAHTIA.html (VIIMEISIN - 9 nappia, Tähti poistettu)
+    ├── Luoma-Aho-OIKEA-10nappia-METRIX-TRANSPARENT.html (Metrix oranssi transparent)
+    └── Luoma-Aho-OIKEA-10nappia-119afd2b505f-ORIGINAL.html (OIKEA alkuperäinen 10 nappia)
