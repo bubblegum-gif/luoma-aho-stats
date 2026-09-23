@@ -1,8 +1,0 @@
-{
-  "par": [4,3,3,3,3,3,3,3,4,3,5,4],
-  "pituus": [125,103,72,57,94,96,103,80,116,85,197,120],
-  "pituus_total": 1248,
-  "avg": [4.7,3.8,3.7,3.4,3.6,4.3,4.2,3.6,5.2,4.3,6.6,4.4],
-  "paivitetty": "2026-09-22T15:00:00Z",
-  "lahde": "Vaylatilasto pituus rivi lisatty Par ylapuolelle - uusimmat versiot"
-}
