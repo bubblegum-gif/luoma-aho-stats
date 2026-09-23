@@ -1,6 +1,10 @@
 {
   "korkeus": "76px desktop / 92px mobile",
   "napit": [
+{
+  "aktiivinen": false
+}
+
     {
       "nimi": "Google Maps",
       "koko": "90x38",
