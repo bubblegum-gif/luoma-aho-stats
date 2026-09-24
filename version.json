@@ -1,0 +1,14 @@
+{
+  "versio": "4.0",
+  "pohja": "kaytossa oleva /mnt/data/index.html",
+  "pvm": "2026-09-24",
+  "saanto": "Ei vanhoja tiedostoja uuteen zippiin - vain uusimmat oikeat",
+  "data": {
+    "tulos_kirjatut": 1144,
+    "laskenta": "586+62+80+416",
+    "pituus_total": 1248,
+    "par_total": 46,
+    "udisc_top5": "ei vieritysta"
+  },
+  "status": "POHJA - kaytossa oleva toimiva versio - ei omia designejä"
+}
