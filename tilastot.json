@@ -1,10 +1,17 @@
 {
-  "tulos_kirjatut_ja_kierrosten_maara": 1144,
-  "metrix_44010": 586,
-  "metrix_44763": 62,
+  "tuloskirjattujen_kierrosten_maara": 1145,
+  "eri_pelaajia": 123,
   "metrix_43119": 80,
-  "udisc": 416,
-  "laskenta": "586+62+80+416=1144",
-  "paivitetty": "2026-09-24",
-  "lahde": "Truthful v4.0 - kaytossa oleva pohja"
+  "metrix_44010": 587,
+  "metrix_44763": 62,
+  "udisc": 412,
+  "yhteensa": 1145,
+  "laskenta": "80+586+62+412=1145",
+  "lahteet": [
+    "https://discgolfmetrix.com/course/43119",
+    "https://discgolfmetrix.com/course/44010",
+    "https://discgolfmetrix.com/course/44763",
+    "https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx/v2/layouts/143835",
+    "https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx"
+  ]
 }
