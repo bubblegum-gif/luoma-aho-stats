@@ -19,7 +19,7 @@ def get_metrix_count(url):
 
 def main():
     m1 = get_metrix_count(URLS["43119"]) or 80
-    m2 = get_metrix_count(URLS["44010"]) or 586
+    m2 = get_metrix_count(URLS["44010"]) or 587
     m3 = get_metrix_count(URLS["44763"]) or 62
     udisc = 416 # haetaan UDiscista erikseen jos API saatavilla
 
