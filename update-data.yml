@@ -1,7 +1,7 @@
 name: Auto 5min v4.0 - kaytossa oleva pohja
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/10 * * * *' # 10min, ei 5min
   workflow_dispatch:
 jobs:
   update:
@@ -14,9 +14,9 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install requests
-      - run: python scripts/fetch_data.py
+      - run: python fetch_data.py # JUURESSA, ei scripts/
       - run: |
           git config user.name "bot"
           git config user.email "bot@luoma-aho.fi"
-          git add data/*.json
-          git diff --staged --quiet || (git commit -m "auto v4.0 truthful 1144" && git push)
+          git add *.json # FLAT juuressa, ei data/
+          git diff --staged --quiet || (git commit -m "auto v10 $(date -Iseconds) 1140/123" && git push)
