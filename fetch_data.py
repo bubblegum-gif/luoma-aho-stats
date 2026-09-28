@@ -24,8 +24,9 @@ def main():
     m3 = get_metrix_count(URLS["44763"]) or 62
     udisc = 416 # haetaan UDiscista erikseen jos API saatavilla
     layout = 416 # haetaan UDiscista erikseen jos API saatavilla
+    stats = # haetaan UDiscista erikseen jos API saatavilla
 
-    total = m1+m2+m3+udisc+layout
+    total = m1+m2+m3+udisc+layout+stats
     eri_pelaajia = 123 # lasketaan myöhemmin uniikeista nimistä
 
     # LASKENTA: kaikki -> pelaajia -> peliaika -> askeleet -> km
