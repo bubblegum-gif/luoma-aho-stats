@@ -1,9 +1,11 @@
-name: Päivitä sivu tunneittain
+name: Luoma-aho 5min Auto - metrix+udisc
 
 on:
   schedule:
-    - cron: '0 * * * *'  # joka tunti, tasalta (UTC)
-  workflow_dispatch: # mahdollistaa käsin ajamisen nappia painamalla
+    - cron: '*/5 * * * *'  # 5min välein, 1s haku frontendissä
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
 
 permissions:
   contents: write
@@ -11,7 +13,6 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -21,22 +22,28 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Asenna riippuvuudet (jos tulee myöhemmin)
+      - name: Asenna riippuvuudet
         run: |
           pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install requests beautifulsoup4 playwright
+          playwright install chromium --with-deps
 
-      - name: Aja update.py
-        run: python update.py
+      - name: Aja dynaaminen päivitys
+        env:
+          UDISC_MANUAL_COUNT: ${{ secrets.UDISC_MANUAL_COUNT }}
+        run: |
+          # 43119 on SEED uusia layoutteja varten - jos virhe, poistetaan automaattisesti
+          # Laskenta: kierrosmäärä = metrix + udisc, pelaajat = metrix + udisc
+          python update_dynamic.py
 
       - name: Commit ja push jos muutoksia
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data.json index.html last_update.txt || true
+          git add data/ data.json index.html last_update.txt || true
           if git diff --staged --quiet; then
             echo "Ei muutoksia - ei commitia"
           else
-            git commit -m "Auto-update: $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git commit -m "Auto-update 5min: $(date -u +'%Y-%m-%d %H:%M UTC') - metrix+udisc = rounds & players"
             git push
           fi
