@@ -11,8 +11,8 @@
   "eri_pelaajat": 148,
   "metrix_players": 82,
   "udisc_players": 66,
-  "updated": "28.09.2026 klo 15:41",
-  "updated_fi": "28.09.2026 klo 15:41 (auto 1s/5min metrix:fallback_image_464 udisc:csv:data/udisc_stats.csv)",
+  "updated": "28.09.2026 klo 15:45",
+  "updated_fi": "28.09.2026 klo 15:45 (auto 1s/5min metrix:fallback_image_464 udisc:csv:data/udisc_stats.csv)",
   "formula": "metrix + udisc",
   "sources": {
     "metrix": "fallback_image_464",
