@@ -22,8 +22,9 @@ def main():
     m2 = get_metrix_count(URLS["44010"]) or 587
     m3 = get_metrix_count(URLS["44763"]) or 62
     udisc = 416 # haetaan UDiscista erikseen jos API saatavilla
+    layout = 416 # haetaan UDiscista erikseen jos API saatavilla
 
-    total = m1+m2+m3+udisc
+    total = m1+m2+m3+udisc+layout
     eri_pelaajia = 123 # lasketaan myöhemmin uniikeista nimistä
 
     # LASKENTA: kaikki -> pelaajia -> peliaika -> askeleet -> km
@@ -34,8 +35,8 @@ def main():
 
     tilastot = {
         "tulos_kirjatut_ja_kierrosten_maara": total,
-        "metrix_43119": m1, "metrix_44010": m2, "metrix_44763": m3, "udisc": udisc,
-        "laskenta": f"{m1}+{m2}+{m3}+{udisc}={total}",
+        "metrix_43119": m1, "metrix_44010": m2, "metrix_44763": m3, "udisc": udisc "layout": layout,
+        "laskenta": f"{m1}+{m2}+{m3}+{udisc}+{layout}={total}",
         "eri_pelaajia": eri_pelaajia,
         "peliaika_min": peliaika_min,
         "peliaika_h": round(peliaika_min/60,1),
