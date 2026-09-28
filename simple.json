@@ -2,7 +2,11 @@
   "rounds": 428,
   "metrix_sum": 0,
   "udisc": 428,
-  "unique_players": 67,
-  "recreation_hours": 603,
-  "updated": "13.05.2026 klo 15:30"
+  "players": 67,
+  "playtime_hours": 603.0,
+  "steps": 1275690,
+  "kilometers": 1020.6,
+  "kilometers_course": 1070.0,
+  "updated": "28.09.2026 klo 02:37 (skaalattu)",
+  "scaling_note": "Skaalattu UDisc referenssistä: 428 kier = 67 pelaajaa, 603h, 1275690 askelta"
 }

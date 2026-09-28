@@ -223,6 +223,34 @@ def main():
     
     total_rounds = metrix_sum + (udisc_plays or 0)
     
+    
+    # --- SKAALATTU LASKENTA UDISC-DATASTA ---
+    # UDisc referenssi (kuvasta 13.05.2026):
+    # 428 rounds, 67 unique, 603h, 1 275 690 steps
+    UD_REF_ROUNDS = 428
+    UD_REF_PLAYERS = 67
+    UD_REF_HOURS = 603
+    UD_REF_STEPS = 1275690
+    UD_REF_KM_PER_STEP = 0.0008  # 0.8m per askel
+    
+    # Kertoimet
+    players_per_round = UD_REF_PLAYERS / UD_REF_ROUNDS  # 0.1565
+    hours_per_round = UD_REF_HOURS / UD_REF_ROUNDS      # 1.409h
+    steps_per_round = UD_REF_STEPS / UD_REF_ROUNDS      # 2980.35
+    km_per_step = UD_REF_KM_PER_STEP
+    
+    # Skaalatut totaalit (Metrix + UDisc)
+    total_players_est = int(round(total_rounds * players_per_round)) if total_rounds > 0 else 0
+    total_hours_est = round(total_rounds * hours_per_round, 1) if total_rounds > 0 else 0
+    total_steps_est = int(round(total_rounds * steps_per_round)) if total_rounds > 0 else 0
+    total_km_est = round(total_steps_est * km_per_step, 1) if total_steps_est > 0 else 0
+    
+    # Jos halutaan käyttää myös ratapituuteen perustuvaa km (2.5km/kierros), lasketaan myös se
+    km_per_round_course = 2.5
+    total_km_course = round(total_rounds * km_per_round_course, 1)
+    
+    # Käytetään askel-pohjaista km:ää ensisijaisena (tarkempi), mutta tallennetaan molemmat
+
     # Rakenna stats.json
     stats = {
         "updated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -231,15 +259,26 @@ def main():
         "metrix_sum": metrix_sum,
         "udisc": {
             "plays": udisc_plays,
-            "plays_30d": None,
-            "source": "manual" if not fetch_udisc_plays else "scraped"
+            "unique_players": 67,
+            "recreation_hours": 603,
+            "steps": 1275690,
+            "source": "UDisc screenshot 13.05.2026 - scaled"
+        },
+        "scaling": {
+            "reference": "UDisc 428 rounds = 67 players, 603h, 1275690 steps",
+            "players_per_round": round(players_per_round, 4),
+            "hours_per_round": round(hours_per_round, 3),
+            "steps_per_round": round(steps_per_round, 1),
+            "km_per_step": km_per_step
         },
         "total": {
             "rounds": total_rounds,
-            "players": None,  # Täytetään kun saatavilla
-            "playtime_hours": None,
-            "steps": None,
-            "kilometers": None
+            "players": total_players_est,
+            "playtime_hours": total_hours_est,
+            "steps": total_steps_est,
+            "kilometers_steps": total_km_est,
+            "kilometers_course": total_km_course,
+            "kilometers": total_km_est  # primary
         },
         "sources": {
             "metrix_courses": [f"https://discgolfmetrix.com/course/{cid}" for cid in METRIX_IDS],
@@ -257,9 +296,25 @@ def main():
         "rounds": total_rounds,
         "metrix_sum": metrix_sum,
         "udisc": udisc_plays,
-        "updated": stats["updated_fi"]
+        "players": total_players_est,
+        "playtime_hours": total_hours_est,
+        "steps": total_steps_est,
+        "kilometers": total_km_est,
+        "kilometers_course": total_km_course,
+        "updated": stats["updated_fi"],
+        "scaling_note": "Skaalattu UDisc referenssistä: 428 kier = 67 pelaajaa, 603h, 1275690 askelta"
     }
     Path("data/simple.json").write_text(json.dumps(simple, indent=2, ensure_ascii=False), encoding="utf-8")
+    
+    # Tallenna myös erillinen skaalattu tiedosto frontendille
+    Path("data/scaled.json").write_text(json.dumps({
+        "rounds": total_rounds,
+        "players": total_players_est,
+        "hours": total_hours_est,
+        "steps": total_steps_est,
+        "km": total_km_est,
+        "updated": stats["updated_fi"]
+    }, indent=2, ensure_ascii=False), encoding="utf-8")
     
     print(f"\n=== Valmis ===")
     print(f"Metrix sum: {metrix_sum} ({metrix_totals})")

@@ -1,0 +1,21 @@
+{
+  "rounds": 428,
+  "players": 67,
+  "hours": 603.0,
+  "steps": 1275690,
+  "km": 1020.6,
+  "km_course": 1070.0,
+  "updated": "28.09.2026 klo 02:37 (skaalattu)",
+  "reference": {
+    "rounds": 428,
+    "players": 67,
+    "hours": 603,
+    "steps": 1275690
+  },
+  "formula": {
+    "players": "rounds * 0.1565",
+    "hours": "rounds * 1.409",
+    "steps": "rounds * 2980.35",
+    "km": "steps * 0.0008"
+  }
+}
