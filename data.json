@@ -11,11 +11,10 @@
   "eri_pelaajat": 149,
   "metrix_players": 82,
   "udisc_players": 67,
-  "updated": "28.09.2026 klo 14:56",
-  "updated_fi": "28.09.2026 klo 14:56 (auto 1s/5min metrix:fallback_image_464 udisc:prev_simple)",
-  "formula": "metrix + udisc",
-  "sources": {
-    "metrix": "fallback_image_464",
-    "udisc": "prev_simple"
-  }
+  "players_scaled": 140,
+  "unique_players_estimate": 149,
+  "total_with_udisc": 892,
+  "updated": "28.09.2026 klo 14:12",
+  "updated_fi": "28.09.2026 klo 14:12 (metrix+udisc)",
+  "formula": "kierrosmäärä = metrix + udisc, pelaajat = metrix_pelaajat + udisc_pelaajat"
 }

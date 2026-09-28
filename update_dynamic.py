@@ -191,6 +191,14 @@ def main():
         "sources": {"metrix": metrix_src, "udisc": udisc_src}
     }
     Path("data").mkdir(exist_ok=True)
+    # Säilytä hole_stats jos olemassa
+    try:
+        hs_path = Path("data/hole_stats.json")
+        if hs_path.exists():
+            hs = json.loads(hs_path.read_text())
+            out["hole_stats"] = hs.get("metrix_manual")
+            out["udisc_monthly"] = hs.get("udisc_csv")
+    except: pass
     Path("data.json").write_text(json.dumps(out, indent=2, ensure_ascii=False), encoding="utf-8")
     Path("data/simple.json").write_text(json.dumps(out, indent=2, ensure_ascii=False), encoding="utf-8")
     Path("data/stats.json").write_text(json.dumps(out, indent=2, ensure_ascii=False), encoding="utf-8")
