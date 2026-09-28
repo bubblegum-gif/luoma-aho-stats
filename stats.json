@@ -1,0 +1,36 @@
+{
+  "updated": "2026-05-13T12:00:00Z",
+  "updated_fi": "13.05.2026 klo 15:30 (UDisc kuva)",
+  "metrix": {
+    "43119": 0,
+    "48112": 0,
+    "44763": 0,
+    "44010": 0
+  },
+  "metrix_sum": 0,
+  "udisc": {
+    "plays": 428,
+    "plays_30d": null,
+    "unique_players": 67,
+    "recreation_hours": 603,
+    "course_rating": 3.7
+  },
+  "total": {
+    "rounds": 428,
+    "players": 67,
+    "playtime_hours": 603
+  },
+  "sources": {
+    "metrix_courses": [
+      "https://discgolfmetrix.com/course/43119",
+      "https://discgolfmetrix.com/course/48112",
+      "https://discgolfmetrix.com/course/44763",
+      "https://discgolfmetrix.com/course/44010"
+    ],
+    "udisc_courses": [
+      "https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx",
+      "https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx/v2/layouts/143835",
+      "https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx/manage/stats"
+    ]
+  }
+}
