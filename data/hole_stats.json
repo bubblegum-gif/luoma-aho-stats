@@ -1,23 +1,65 @@
 {
-  "rounds": 892,
-  "kierrosmaara": 892,
-  "metrix": 464,
-  "udisc": 428,
-  "metrix_sum": 464,
-  "udisc_rounds": 428,
-  "kilpailukierrokset": 122,
-  "harjoituskierrokset": 342,
-  "players": 149,
-  "eri_pelaajat": 149,
-  "metrix_players": 82,
-  "udisc_players": 67,
-  "players_scaled": 140,
-  "unique_players_estimate": 149,
-  "total_with_udisc": 892,
-  "updated": "28.09.2026 klo 15:46",
-  "updated_fi": "28.09.2026 klo 15:46 (live 1s/5min metrix+udisc)",
-  "formula": "kierrosmäärä = metrix + udisc, pelaajat = metrix_pelaajat + udisc_pelaajat",
-  "hole_stats": {
+  "updated": "2026-09-28T auto 1s/5min",
+  "udisc_csv": {
+    "file": "luoma-ahon-frisbeegolfrata-play-counts-monthly-2026-09-28.csv",
+    "total_rounds": 428,
+    "monthly": [
+      {
+        "date": "2025-07-01",
+        "roundCount": 59
+      },
+      {
+        "date": "2025-08-01",
+        "roundCount": 59
+      },
+      {
+        "date": "2025-09-01",
+        "roundCount": 50
+      },
+      {
+        "date": "2025-10-01",
+        "roundCount": 29
+      },
+      {
+        "date": "2025-11-01",
+        "roundCount": 4
+      },
+      {
+        "date": "2025-12-01",
+        "roundCount": 2
+      },
+      {
+        "date": "2026-03-01",
+        "roundCount": 20
+      },
+      {
+        "date": "2026-04-01",
+        "roundCount": 25
+      },
+      {
+        "date": "2026-05-01",
+        "roundCount": 34
+      },
+      {
+        "date": "2026-06-01",
+        "roundCount": 31
+      },
+      {
+        "date": "2026-07-01",
+        "roundCount": 56
+      },
+      {
+        "date": "2026-08-01",
+        "roundCount": 34
+      },
+      {
+        "date": "2026-09-01",
+        "roundCount": 25
+      }
+    ],
+    "note": "UDisc monthly play counts - sum = 428"
+  },
+  "metrix_manual": {
     "note": "Väylät 13-24 ovat samat kuin 1-12 (12 väylän rata pelataan 2x = 24)",
     "source_images": [
       "kuva_ffa224.png (12)",
@@ -488,63 +530,8 @@
       "Other_pct": 1
     }
   },
-  "udisc_monthly": {
-    "file": "luoma-ahon-frisbeegolfrata-play-counts-monthly-2026-09-28.csv",
-    "total_rounds": 428,
-    "monthly": [
-      {
-        "date": "2025-07-01",
-        "roundCount": 59
-      },
-      {
-        "date": "2025-08-01",
-        "roundCount": 59
-      },
-      {
-        "date": "2025-09-01",
-        "roundCount": 50
-      },
-      {
-        "date": "2025-10-01",
-        "roundCount": 29
-      },
-      {
-        "date": "2025-11-01",
-        "roundCount": 4
-      },
-      {
-        "date": "2025-12-01",
-        "roundCount": 2
-      },
-      {
-        "date": "2026-03-01",
-        "roundCount": 20
-      },
-      {
-        "date": "2026-04-01",
-        "roundCount": 25
-      },
-      {
-        "date": "2026-05-01",
-        "roundCount": 34
-      },
-      {
-        "date": "2026-06-01",
-        "roundCount": 31
-      },
-      {
-        "date": "2026-07-01",
-        "roundCount": 56
-      },
-      {
-        "date": "2026-08-01",
-        "roundCount": 34
-      },
-      {
-        "date": "2026-09-01",
-        "roundCount": 25
-      }
-    ],
-    "note": "UDisc monthly play counts - sum = 428"
+  "calculation": {
+    "kierrosmaara": "metrix 464 + udisc 428 = 892 (udisc CSV sum)",
+    "pelaajat": "metrix 82 + udisc 67 = 149"
   }
 }
