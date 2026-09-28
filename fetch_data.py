@@ -7,7 +7,8 @@ URLS = {
     "44010": "https://discgolfmetrix.com/course/44010",
     "44763": "https://discgolfmetrix.com/course/44763",
     "udisc": "https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx",
-    "layout": "https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx/v2/layouts/143835"
+    "layout": "https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx/v2/layouts/143835",
+    "stats": "https://udisc.com/courses/luoma-ahon-frisbeegolfrata-YNEx/manage/stats",
 }
 
 def get_metrix_count(url):
